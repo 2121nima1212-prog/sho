@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تماس با ما - آکادمی زبان</title>
+    <title>آکادمی زبان - صفحه اصلی</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&family=Dana:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,8 +12,12 @@
             font-family: 'Dana', 'Vazirmatn', sans-serif;
         }
         
-        .contact-hero {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        .hero-gradient {
+            background: linear-gradient(135deg, #0067E3 0%, #0047AB 100%);
+        }
+        
+        .testimonial-slider {
+            scroll-behavior: smooth;
         }
         
         .mobile-menu {
@@ -23,6 +27,36 @@
         
         .mobile-menu.open {
             transform: translateX(0);
+        }
+        
+        /* Hide scrollbar for testimonial slider */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* FAQ Accordion */
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .faq-question {
+            cursor: pointer;
+            padding: 1rem 0;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.open {
+            max-height: 200px;
         }
 
         /* Login Modal */
@@ -160,76 +194,379 @@
         </div>
     </div>
 
-    <!-- Contact Hero Section -->
-    <section class="contact-hero text-white py-12 md:py-20">
+    <!-- Hero Section -->
+    <section class="hero-gradient relative py-12 md:py-20">
         <div class="container mx-auto px-4">
-            <div class="text-center">
-                <h1 class="text-3xl md:text-5xl font-bold mb-6">تماس با ما</h1>
-                <p class="text-lg md:text-xl mb-8 opacity-90 max-w-2xl mx-auto">آماده‌اید تا با تیم ما ارتباط برقرار کنید؟ از طریق فرم زیر پیام خود را ارسال کنید</p>
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="تیم ما در حال کار" class="w-full max-w-2xl mx-auto rounded-2xl shadow-2xl mt-8">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-8">
+                    <h1 class="text-3xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">آموزش زبان انگلیسی رایگان</h1>
+                    <p class="text-lg md:text-xl mb-8 opacity-90 text-white drop-shadow-md">با مقالات و نکات رایگان، مهارت‌های انگلیسی خود را ارتقا دهید</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
+                        <button class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition duration-300 shadow-lg">
+                            مشاهده مقالات
+                        </button>
+                        <button class="border-2 border-white text-white px-6 py-3 rounded-lg font-bold hover:bg-white hover:text-blue-600 transition duration-300">
+                            درباره ما
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 flex justify-center relative z-10">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="یادگیری زبان انگلیسی" class="w-full max-w-md rounded-2xl shadow-2xl object-cover h-72 md:h-80">
+                    <div class="absolute -top-4 -right-4 bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg shadow-lg font-bold">
+                        رایگان
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- Overlay for gradient effect -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
     </section>
 
-    <!-- Contact Info Section -->
+    <!-- Free English Articles Section -->
     <section class="py-12 md:py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="p-6">
-                    <i class="fas fa-map-marker-alt text-blue-600 text-3xl mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">آدرس</h3>
-                    <p class="text-gray-600">تهران، خیابان انقلاب، پلاک ۴۵۶</p>
-                </div>
-                <div class="p-6">
-                    <i class="fas fa-phone text-blue-600 text-3xl mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">تلفن</h3>
-                    <p class="text-gray-600">۰۲۱-۹۸۷۶۵۴۳۲</p>
-                </div>
-                <div class="p-6">
-                    <i class="fas fa-envelope text-blue-600 text-3xl mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">ایمیل</h3>
-                    <p class="text-gray-600">info@zabanacademy.com</p>
-                </div>
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">مقالات آموزشی انگلیسی</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">نکات رایگان برای سطوح مختلف انگلیسی</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-6 md:mb-8">
+                <button class="bg-blue-600 text-white px-3 py-1 md:px-4 md:py-2 rounded-lg text-sm">همه</button>
+                <button class="bg-gray-200 text-gray-700 px-3 py-1 md:px-4 md:py-2 rounded-lg text-sm hover:bg-gray-300">مبتدی</button>
+                <button class="bg-gray-200 text-gray-700 px-3 py-1 md:px-4 md:py-2 rounded-lg text-sm hover:bg-gray-300">متوسط</button>
+                <button class="bg-gray-200 text-gray-700 px-3 py-1 md:px-4 md:py-2 rounded-lg text-sm hover:bg-gray-300">پیشرفته</button>
+            </div>
+            
+            <!-- Articles Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Article 1 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="گرامر انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded mb-2 inline-block">مبتدی</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">گرامر پایه انگلیسی: زمان حال ساده</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">یادگیری زمان حال ساده با مثال‌های عملی و تمرین‌ها</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+                
+                <!-- Article 2 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="مکالمه انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded mb-2 inline-block">متوسط</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">مکالمه روزمره: سلام و احوالپرسی</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">عبارات مفید برای مکالمات اولیه و تمرین شنیداری</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+                
+                <!-- Article 3 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="واژگان انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded mb-2 inline-block">پیشرفته</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">واژگان پیشرفته: اصطلاحات تجاری</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">اصطلاحات ضروری برای محیط کار و جلسات</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+                
+                <!-- Additional Article 1 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="شنیداری انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-yellow-100 text-yellow-600 text-xs px-2 py-1 rounded mb-2 inline-block">مبتدی</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">تمرین شنیداری: پادکست‌های ساده</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">معرفی پادکست‌های رایگان برای مبتدیان</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+                
+                <!-- Additional Article 2 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="خواندن انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded mb-2 inline-block">متوسط</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">خواندن متون: داستان‌های کوتاه</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">داستان‌های انگلیسی با واژگان توضیح‌دار</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+                
+                <!-- Additional Article 3 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="نوشتاری انگلیسی" class="w-full h-40 sm:h-48 object-cover">
+                    <div class="p-4 sm:p-6">
+                        <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded mb-2 inline-block">پیشرفته</span>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">نوشتاری: ایمیل‌های رسمی</h3>
+                        <p class="text-gray-600 text-sm sm:text-base mb-4">راهنمای نوشتن ایمیل‌های حرفه‌ای به انگلیسی</p>
+                        <a href="#" class="text-blue-600 font-medium">خواندن مقاله</a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-8 md:mt-12">
+                <button class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition duration-300">
+                    مشاهده همه مقالات
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Contact Form Section -->
+    <!-- Stats Section -->
     <section class="py-12 md:py-16 bg-gray-100">
         <div class="container mx-auto px-4">
-            <div class="max-w-2xl mx-auto">
-                <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">ارسال پیام</h2>
-                <form class="space-y-6" id="contactForm">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">نام کامل</label>
-                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">ایمیل</label>
-                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">موضوع</label>
-                        <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">پیام</label>
-                        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300">
-                        ارسال پیام
-                    </button>
-                </form>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+                    <div class="text-blue-600 text-2xl md:text-3xl font-bold mb-2">۴,۰۰۰+</div>
+                    <div class="text-gray-600 text-sm md:text-base">دانشجو</div>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+                    <div class="text-blue-600 text-2xl md:text-3xl font-bold mb-2">۵۰+</div>
+                    <div class="text-gray-600 text-sm md:text-base">مقاله رایگان</div>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+                    <div class="text-blue-600 text-2xl md:text-3xl font-bold mb-2">۴۰+</div>
+                    <div class="text-gray-600 text-sm md:text-base">مدرسان مجرب</div>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+                    <div class="text-blue-600 text-2xl md:text-3xl font-bold mb-2">۹۷٪</div>
+                    <div class="text-gray-600 text-sm md:text-base">رضایت دانشجویان</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
+    <!-- Testimonials Section -->
     <section class="py-12 md:py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">نظرات دانشجویان</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">تجربه‌های واقعی از مقالات رایگان</p>
+            </div>
+            
+            <div class="testimonial-slider flex overflow-x-auto pb-6 space-x-6 space-x-reverse scrollbar-hide">
+                <!-- Testimonial 1 -->
+                <div class="min-w-[85vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold ml-3">س.م</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">سارا محمدی</h4>
+                            <p class="text-gray-500 text-sm">خواننده مقالات انگلیسی</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">مقالات گرامر عالی بود. به راحتی فهمیدم و تمرین کردم.</p>
+                    <div class="flex text-yellow-400 mt-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="min-w-[85vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold ml-3">ا.ر</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">علی رضایی</h4>
+                            <p class="text-gray-500 text-sm">خواننده مقالات مکالمه</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">از صفر شروع کردم و حالا جملات ساده می‌سازم. ممنون!</p>
+                    <div class="flex text-yellow-400 mt-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="min-w-[85vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold ml-3">م.ک</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">مهدی کریمی</h4>
+                            <p class="text-gray-500 text-sm">خواننده مقالات واژگان</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">واژگان پیشرفته کمک کرد به کارم. عالی!</p>
+                    <div class="flex text-yellow-400 mt-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Additional Testimonial -->
+                <div class="min-w-[85vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold ml-3">ف.ا</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">فاطمه احمدی</h4>
+                            <p class="text-gray-500 text-sm">خواننده مقالات شنیداری</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">پادکست‌ها عالی برای تمرین شنیداری.</p>
+                    <div class="flex text-yellow-400 mt-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-12 md:py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">چرا آکادمی زبان؟</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">مزایای یادگیری رایگان انگلیسی</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center bg-white p-6 rounded-xl shadow-sm">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl mx-auto mb-4">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">مقالات رایگان</h3>
+                    <p class="text-gray-600 text-sm">محتوای غنی بدون هزینه</p>
+                </div>
+                
+                <div class="text-center bg-white p-6 rounded-xl shadow-sm">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-2xl mx-auto mb-4">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">پشتیبانی رایگان</h3>
+                    <p class="text-gray-600 text-sm">سوالات را بپرسید</p>
+                </div>
+                
+                <div class="text-center bg-white p-6 rounded-xl shadow-sm">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mx-auto mb-4">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">دانلود PDF</h3>
+                    <p class="text-gray-600 text-sm">فایل‌های آموزشی رایگان</p>
+                </div>
+                
+                <div class="text-center bg-white p-6 rounded-xl shadow-sm">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 text-2xl mx-auto mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">جامعه دانشجویان</h3>
+                    <p class="text-gray-600 text-sm">بحث و تبادل نظر</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Free Lessons Section -->
+    <section class="py-12 md:py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">آموزش‌های رایگان جدید</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">درس‌های کوتاه انگلیسی</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="درس گرامر" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-gray-800 mb-2">درس ۱: زمان گذشته</h3>
+                    <p class="text-gray-600 text-sm mb-4">توضیح کامل با مثال</p>
+                    <a href="#" class="text-blue-600 font-medium">شروع درس</a>
+                </article>
+                
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="درس مکالمه" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-gray-800 mb-2">درس ۲: مکالمه در رستوران</h3>
+                    <p class="text-gray-600 text-sm mb-4">عبارات کاربردی</p>
+                    <a href="#" class="text-blue-600 font-medium">شروع درس</a>
+                </article>
+                
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="درس واژگان" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-gray-800 mb-2">درس ۳: واژگان سفر</h3>
+                    <p class="text-gray-600 text-sm mb-4">کلمات ضروری سفر</p>
+                    <a href="#" class="text-blue-600 font-medium">شروع درس</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-12 md:py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">سوالات متداول</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">پاسخ به پرسش‌های رایج درباره مقالات</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="faq-item">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="font-semibold text-gray-800">چگونه مقالات را دانلود کنم؟</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-600 mt-2 px-2">از دکمه دانلود در انتهای هر مقاله.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="font-semibold text-gray-800">آیا مقالات به روز هستند؟</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-600 mt-2 px-2">بله، هر ماه به‌روزرسانی می‌شوند.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="font-semibold text-gray-800">چطور سوال بپرسم؟</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-600 mt-2 px-2">از طریق کامنت‌ها یا ایمیل پشتیبانی.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="font-semibold text-gray-800">مقالات برای چه سطوحی مناسب است؟</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-600 mt-2 px-2">از مبتدی تا پیشرفته، با برچسب سطح.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-12 md:py-16 bg-blue-600 text-white">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8">مکان ما</h2>
-            <div class="max-w-4xl mx-auto">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.9999999999995!2d51.414567315!3d35.699739!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQxJzU2LjgiTiA1McKwMjQnNTIuNyJF!5e0!3m2!1sfa!2sir!4v1690000000000" width="100%" height="400" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">در خبرنامه عضو شوید</h2>
+            <p class="max-w-2xl mx-auto mb-8 opacity-90">از مقالات جدید و نکات انگلیسی مطلع شوید</p>
+            
+            <div class="max-w-md mx-auto flex flex-col sm:flex-row">
+                <input type="email" placeholder="آدرس ایمیل خود را وارد کنید" class="flex-1 py-3 px-4 rounded-t-lg sm:rounded-r-lg sm:rounded-t-none border-0 focus:outline-none focus:ring-2 focus:ring-blue-300 text-gray-800">
+                <button class="bg-blue-800 py-3 px-6 rounded-b-lg sm:rounded-l-lg sm:rounded-b-none hover:bg-blue-900 transition duration-300 font-bold">
+                    عضویت
+                </button>
             </div>
         </div>
     </section>
@@ -333,6 +670,63 @@
             }
         });
 
+        // Simple testimonial slider functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.querySelector('.testimonial-slider');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Touch events for mobile
+            slider.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            
+            slider.addEventListener('touchend', () => {
+                isDown = false;
+            });
+            
+            slider.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        });
+
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            answer.classList.toggle('open');
+            icon.style.transform = answer.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
         // Login Modal Functions
         function openLoginModal() {
             document.getElementById('loginModal').style.display = 'block';
@@ -362,12 +756,6 @@
                 modal.style.display = 'none';
             }
         }
-
-        // Contact Form Submission (Demo Alert)
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('پیام شما ارسال شد! به زودی پاسخ می‌دهیم.');
-        });
     </script>
 </body>
 </html>
