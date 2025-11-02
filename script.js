@@ -101,8 +101,7 @@ function renderCourses() {
                 <h3 class="font-bold text-xl mb-2 text-gray-800">${c.title}</h3>
                 <p class="text-gray-600 mb-4">${c.desc}</p>
                 <span class="text-sm text-blue-600 mb-4 block">${c.level}</span>
-                <span class="inline-block bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">۹۰٪ تخفیف</span>
-                <button onclick="openLesson(${c.id})" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">شروع درس</button>
+                <button onclick="openLesson(${c.id})" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">شروع درس رایگان</button>
             </div>
         </div>
     `).join('');
@@ -134,20 +133,49 @@ function closeLesson() {
 }
 
 function checkAnswer(selected, correct, index) {
-    if (selected === correct) quizScore++;
-    document.getElementById('quizScore').textContent = quizScore;
-    alert(selected === correct ? 'درست!' : 'اشتباه! جواب: ' + correct);
+    if (selected === correct) {
+        quizScore++;
+        document.getElementById(`quizScore`).textContent = quizScore;
+        alert('درست! +1 نمره');
+    } else {
+        alert('غلط! پاسخ درست: ' + correct);
+    }
+    // Save grade
+    const grades = JSON.parse(localStorage.getItem('grades') || '{}');
+    grades[`lesson_${index}`] = (quizScore / correct.length) * 100; // %
+    localStorage.setItem('grades', JSON.stringify(grades));
+}
+
+function enrollLesson() {
+    // Save enrollment
+    const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
+    enrollments.push({ userId: currentUser.email, courseId: courses[0].id, progress: 50, grades: localStorage.getItem('grades') });
+    localStorage.setItem('enrollments', JSON.stringify(enrollments));
+    alert('درس ثبت شد - پیشرفت در داشبورد ببینید');
+    closeLesson();
+    renderDashboard();
 }
 
 // Dashboard
 function renderDashboard() {
-    const list = document.getElementById('reportsList');
-    if (!list || !currentUser) return;
-    list.innerHTML = reports.filter(r => r.studentId === currentUser.email).map(r => `
+    const progressList = document.getElementById('progressList');
+    if (!progressList) return;
+    const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]').filter(e => e.userId === currentUser.email);
+    progressList.innerHTML = enrollments.map(e => `
         <div class="p-4 border rounded mb-4 bg-gray-50">
-            <h4 class="font-bold">${r.date}</h4>
-            <p>نمرات: ${JSON.stringify(r.grades)}</p>
-            <p>یادداشت: ${r.notes}</p>
+            <h4 class="font-bold">${courses.find(c => c.id === e.courseId)?.title || 'درس'}</h4>
+            <p>پیشرفت: ${e.progress}%</p>
+            <p>نمرات: ${JSON.stringify(e.grades)}</p>
+        </div>
+    `).join('') || '<p>هیچ درسی ثبت نشده</p>';
+
+    const reportsList = document.getElementById('reportsList');
+    const userReports = reports.filter(r => r.studentId === currentUser.email);
+    reportsList.innerHTML = userReports.map(r => `
+        <div class="p-4 border rounded mb-4 bg-gray-50">
+            <p><strong>تاریخ:</strong> ${r.date}</p>
+            <p><strong>نمرات:</strong> ${JSON.stringify(r.grades)}</p>
+            <p><strong>یادداشت:</strong> ${r.notes}</p>
             <button onclick="downloadReport('${r.id}')" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">دانلود PDF کارنامه</button>
         </div>
     `).join('') || '<p>کارنامه‌ای وجود ندارد</p>';
@@ -156,9 +184,15 @@ function renderDashboard() {
 function downloadReport(id) {
     const report = reports.find(r => r.id === id);
     if (!report) return alert('کارنامه یافت نشد');
-    // Simulate PDF download (use jsPDF if included)
-    alert(`دانلود کارنامه: ${report.notes} - نمره: ${JSON.stringify(report.grades)}`);
-    // Real impl: const { jsPDF } = window.jspdf; ... doc.save();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text('کارنامه لینگ پلاس', 105, 20, { align: 'center' });
+    doc.text(`دانشجو: ${currentUser.name}`, 20, 40);
+    doc.text(`تاریخ: ${report.date}`, 20, 50);
+    doc.text(`نمرات: ${JSON.stringify(report.grades)}`, 20, 60);
+    doc.text(`یادداشت ادمین: ${report.notes}`, 20, 80);
+    doc.save(`karname-${id}.pdf`);
 }
 
 // Admin
@@ -254,15 +288,5 @@ document.getElementById('searchInput').onkeyup = (e) => {
     renderCourses();
 };
 
-// FAQ Toggle (جدید)
-function toggleFAQ(element) {
-    const answer = element.nextElementSibling;
-    const icon = element.querySelector('i');
-    answer.classList.toggle('open');
-    if (icon) icon.style.transform = answer.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-}
-
 // Other sections (about, contact) - static
-if (document.getElementById('about')) {
-    document.getElementById('about').innerHTML = '<div class="container mx-auto px-4 py-16"><h2 class="text-3xl font-bold mb-4">درباره ما</h2><p class="text-gray-600">پلتفرم آموزش رایگان زبان انگلیسی با تمرکز روی متون و کوئیز.</p></div>';
-}
+document.getElementById('about') ? document.getElementById('about').innerHTML = '<div class="container mx-auto px-4 py-16"><h2 class="text-3xl font-bold mb-4">درباره ما</h2><p class="text-gray-600">پلتفرم آموزش رایگان زبان انگلیسی با تمرکز روی متون و کوئیز.</p></div>' : null;
