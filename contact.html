@@ -24,6 +24,40 @@
         .mobile-menu.open {
             transform: translateX(0);
         }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -42,7 +76,7 @@
                 <!-- Search Bar - Hidden on mobile -->
                 <div class="flex-1 max-w-md mx-4 hidden md:block">
                     <div class="relative">
-                        <input type="text" placeholder="جستجوی دوره‌های زبان..." class="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <input type="text" placeholder="جستجوی مقالات انگلیسی..." class="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
                 </div>
@@ -50,22 +84,17 @@
                 <!-- Navigation Menu - Hidden on mobile -->
                 <nav class="hidden md:flex space-x-8 space-x-reverse">
                     <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">خانه</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">دوره‌ها</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">وبلاگ</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">آموزش رایگان</a>
                     <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">درباره ما</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">تماس با ما</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium">تماس با ما</a>
                 </nav>
                 
-                <!-- Icons -->
+                <!-- Icons and Login Button -->
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <button class="relative text-gray-700 hover:text-blue-600 hidden sm:block">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="absolute -top-2 -left-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">۲</span>
+                    <button class="text-gray-700 hover:text-blue-600 hidden sm:block" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt text-xl"></i>
                     </button>
-                    <button class="text-gray-700 hover:text-blue-600 hidden sm:block">
-                        <i class="far fa-heart text-xl"></i>
-                    </button>
-                    <button class="bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-sm sm:text-base">
+                    <button class="bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-sm sm:text-base" onclick="openLoginModal()">
                         ورود
                     </button>
                     <button class="md:hidden text-gray-700" id="mobile-menu-button">
@@ -92,31 +121,46 @@
         
         <div class="mb-6">
             <div class="relative">
-                <input type="text" placeholder="جستجوی دوره‌های زبان..." class="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <input type="text" placeholder="جستجوی مقالات انگلیسی..." class="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
             </div>
         </div>
         
         <nav class="space-y-4 mb-8">
             <a href="index.html" class="block text-gray-700 hover:text-blue-600 font-medium py-2">خانه</a>
-            <a href="#" class="block text-gray-700 hover:text-blue-600 font-medium py-2">دوره‌ها</a>
-            <a href="#" class="block text-gray-700 hover:text-blue-600 font-medium py-2">وبلاگ</a>
+            <a href="#" class="block text-gray-700 hover:text-blue-600 font-medium py-2">آموزش رایگان</a>
             <a href="#" class="block text-gray-700 hover:text-blue-600 font-medium py-2">درباره ما</a>
-            <a href="#" class="block text-gray-700 hover:text-blue-600 font-medium py-2">تماس با ما</a>
+            <a href="contact.html" class="block text-gray-700 hover:text-blue-600 font-medium py-2">تماس با ما</a>
         </nav>
         
         <div class="flex space-x-4 space-x-reverse mb-8">
-            <button class="relative text-gray-700 hover:text-blue-600">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-2 -left-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">۲</span>
-            </button>
-            <button class="text-gray-700 hover:text-blue-600">
-                <i class="far fa-heart text-xl"></i>
+            <button class="text-gray-700 hover:text-blue-600" onclick="openLoginModal()">
+                <i class="fas fa-sign-in-alt text-xl"></i>
             </button>
         </div>
     </div>
 
-    <!-- Contact Hero Section (Different from Homepage) -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2 class="text-2xl font-bold text-center mb-6">ورود به حساب کاربری</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">ایمیل</label>
+                    <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">رمز عبور</label>
+                    <input type="password" id="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300">ورود</button>
+            </form>
+            <p class="text-center mt-4 text-gray-600">حساب ندارید؟ <a href="#" class="text-blue-600">ثبت نام کنید</a></p>
+        </div>
+    </div>
+
+    <!-- Contact Hero Section -->
     <section class="contact-hero text-white py-12 md:py-20">
         <div class="container mx-auto px-4">
             <div class="text-center">
@@ -127,7 +171,7 @@
         </div>
     </section>
 
-    <!-- Contact Info Section (Unique Content) -->
+    <!-- Contact Info Section -->
     <section class="py-12 md:py-16 bg-white">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -155,7 +199,7 @@
         <div class="container mx-auto px-4">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">ارسال پیام</h2>
-                <form class="space-y-6">
+                <form class="space-y-6" id="contactForm">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">نام کامل</label>
                         <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -180,7 +224,7 @@
         </div>
     </section>
 
-    <!-- Map Section (Unique Visual) -->
+    <!-- Map Section -->
     <section class="py-12 md:py-16 bg-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8">مکان ما</h2>
@@ -202,7 +246,7 @@
                         </div>
                         <span class="mr-2 text-xl font-bold">آکادمی زبان</span>
                     </div>
-                    <p class="text-gray-400 mb-4 text-sm">پلتفرم آموزشی آنلاین برای یادگیری زبان‌های خارجی با کیفیت بالا و مدرسان حرفه‌ای</p>
+                    <p class="text-gray-400 mb-4 text-sm">پلتفرم آموزش رایگان زبان انگلیسی با مقالات و درس‌های کاربردی</p>
                     <div class="flex space-x-4 space-x-reverse">
                         <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition duration-300">
                             <i class="fab fa-telegram"></i>
@@ -225,21 +269,20 @@
                     <ul class="space-y-2">
                         <li><a href="index.html" class="text-gray-400 hover:text-white transition duration-300 text-sm">صفحه اصلی</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">درباره ما</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">دوره‌ها</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">وبلاگ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">تماس با ما</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">آموزش رایگان</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300 text-sm">تماس با ما</a></li>
                     </ul>
                 </div>
                 
                 <!-- Column 3 -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">زبان‌های موجود</h3>
+                    <h3 class="text-lg font-bold mb-4">موضوعات مقالات</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">انگلیسی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">فرانسوی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">آلمانی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">اسپانیایی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">ایتالیایی</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">گرامر</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">مکالمه</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">واژگان</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">شنیداری</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 text-sm">خواندن</a></li>
                     </ul>
                 </div>
                 
@@ -290,8 +333,38 @@
             }
         });
 
-        // Form Submission (Simple Alert for Demo)
-        document.querySelector('form').addEventListener('submit', (e) => {
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // Login Form Submission (Demo Alert)
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (email && password) {
+                alert('ورود موفقیت‌آمیز! خوش آمدید ' + email);
+                closeLoginModal();
+            } else {
+                alert('لطفاً ایمیل و رمز عبور را وارد کنید.');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Contact Form Submission (Demo Alert)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('پیام شما ارسال شد! به زودی پاسخ می‌دهیم.');
         });
