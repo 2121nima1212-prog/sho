@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش رایگان - LingPlus Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&family=Dana:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header (مشابه index.html) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50"> <!-- کپی از index.html --> </header>
+
+    <!-- Mobile Menu (مشابه) --> <!-- کپی -->
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-12">آموزش‌های رایگان</h1>
+            <p class="text-center text-gray-600 mb-8">دوره‌های تعاملی با کوئیز – کلیک کنید و شروع کنید!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="freeCoursesGrid"></div>
+        </div>
+    </section>
+
+    <!-- Footer (مشابه) --> <!-- کپی -->
+
+    <script>
+        // لود دوره‌ها از courses.json
+        fetch('courses.json').then(res => res.json()).then(data => {
+            const grid = document.getElementById('freeCoursesGrid');
+            grid.innerHTML = data.map(c => `
+                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
+                    <h3 class="text-xl font-bold mb-2">${c.title}</h3>
+                    <p class="text-gray-600 mb-4">${c.desc}</p>
+                    <span class="inline-block bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">۹۰٪ تخفیف</span>
+                    ${c.lessons.map(l => `<a href="lesson-${c.id}-${l.title.replace(/\s+/g, '-').toLowerCase()}.html" class="block bg-blue-600 text-white py-2 rounded mb-2 hover:bg-blue-700">${l.title}</a>`).join('')}
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
