@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Admin",
+    "email": "admin@lingplus.com",
+    "password": "admin123",
+    "role": "admin",
+    "approved": true
+  }
+]

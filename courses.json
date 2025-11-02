@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "title": "گرامر پایه",
+    "desc": "درس‌های ساده گرامر انگلیسی برای مبتدیان",
+    "level": "beginner",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    "lessons": [
+      {
+        "title": "درس 1: فعل To Be",
+        "content": "<p><strong>English Lesson: Verb 'To Be'</strong></p><p>The verb 'be' is used to describe states. Forms: am (I), is (he/she/it), are (you/we/they).</p><ul><li>I <em>am</em> a student.</li><li>She <em>is</em> happy.</li><li>We <em>are</em> friends.</li></ul><p>Negative: I am not tired. Question: Are you ready?</p>",
+        "quiz": [
+          {
+            "question": "I ___ happy.",
+            "options": ["am", "is", "are"],
+            "answer": "am"
+          },
+          {
+            "question": "They ___ doctors.",
+            "options": ["am", "is", "are"],
+            "answer": "are"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "واژگان روزمره",
+    "desc": "یادگیری کلمات مفید برای مکالمه",
+    "level": "beginner",
+    "image": "https://images.unsplash.com/photo-1574414065843-7a3d7d2da27c?w=400",
+    "lessons": [
+      {
+        "title": "درس 1: احوالپرسی",
+        "content": "<p><strong>Daily Vocabulary: Greetings</strong></p><p>Hello = سلام. Goodbye = خداحافظ. How are you? = حالت چطوره؟ I'm fine, thank you = خوبم، ممنون.</p><ul><li>Good morning! = صبح بخیر!</li><li>See you later = بعداً می‌بینمت.</li></ul>",
+        "quiz": [
+          {
+            "question": 'What is "خداحافظ" in English?',
+            "options": ["Hello", "Goodbye", "Thank you"],
+            "answer": "Goodbye"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "مکالمه متوسط",
+    "desc": "گفتگوهای عملی برای سطح متوسط",
+    "level": "intermediate",
+    "image": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400",
+    "lessons": [
+      {
+        "title": "درس 1: خرید",
+        "content": "<p><strong>Conversation: Shopping</strong></p><p>Excuse me, where is the store? = ببخشید، فروشگاه کجاست؟ How much does it cost? = چقدر قیمت داره؟ It's expensive = گرونه.</p><ul><li>Can I try it on? = می‌تونم امتحانش کنم؟</li><li>I'll take it = می‌گیرمش.</li></ul>",
+        "quiz": [
+          {
+            "question": 'How do you say "چقدر قیمت داره؟"?',
+            "options": ["How much is this?", "Where is the store?", "It's cheap."],
+            "answer": "How much is this?"
+          }
+        ]
+      }
+    ]
+  }
+]
