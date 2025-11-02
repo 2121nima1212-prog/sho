@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-50">
-    <!-- Header (بدون تغییر) -->
+    <!-- Header (ویرایش‌شده با لینک‌های جدید) -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
@@ -45,7 +45,7 @@
         </div>
     </header>
 
-    <!-- Hero Section (بدون تغییر عمده) -->
+    <!-- Hero Section (همون قبلی، بدون تغییر عمده) -->
     <section class="hero-gradient text-white py-20">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-5xl font-bold mb-6">به LingPlus Academy خوش آمدید</h1>
@@ -54,7 +54,7 @@
         </div>
     </section>
 
-    <!-- Courses Grid -->
+    <!-- Courses Grid (همون قبلی + ادیت تخفیف) -->
     <section id="home" class="py-16">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12">دوره‌های محبوب</h2>
@@ -67,7 +67,7 @@
         </div>
     </section>
 
-    <!-- درباره ما Section (جدید) -->
+    <!-- درباره ما Section (جدید، بدون پاک کردن محتوای قبلی) -->
     <section id="about" class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 animate-fade-in">درباره LingPlus Academy</h2>
@@ -124,7 +124,7 @@
         </div>
     </section>
 
-    <!-- Dashboard و Admin Sections (از script.js لود می‌شن، بدون تغییر) -->
+    <!-- Dashboard و Admin Sections (از script.js لود می‌شن) -->
     <section id="dashboard" class="py-16 hidden">
         <div class="container mx-auto px-4">
             <h2>داشبورد شما</h2>
@@ -136,41 +136,86 @@
         <div class="container mx-auto px-4">
             <h2>پنل ادمین</h2>
             <div id="usersList"></div>
-            <!-- فرم createUser و uploadReport -->
+            <!-- فرم createUser و uploadReport – اگر لازم، از JS لود می‌شه -->
         </div>
     </section>
 
-    <!-- Modals (بدون تغییر عمده) -->
-    <div id="authModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <!-- Modals (بدون تغییر) -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-            <h3>ورود</h3>
-            <input id="authEmail" type="email" placeholder="ایمیل" class="w-full p-2 border mb-2">
-            <input id="authPass" type="password" placeholder="رمز" class="w-full p-2 border mb-2">
-            <label><input type="checkbox" id="adminLogin"> ورود ادمین</label>
-            <button onclick="handleAuth()" class="w-full bg-blue-600 text-white p-2 mt-4">ورود</button>
-            <button onclick="closeAuth()" class="w-full bg-gray-300 p-2 mt-2">بستن</button>
+            <h3 class="text-xl font-bold mb-4">ورود</h3>
+            <input id="authEmail" type="email" placeholder="ایمیل" class="w-full p-2 border mb-2 rounded">
+            <input id="authPass" type="password" placeholder="رمز عبور" class="w-full p-2 border mb-2 rounded">
+            <label class="flex items-center mb-2">
+                <input type="checkbox" id="adminLogin" class="mr-2"> ورود ادمین
+            </label>
+            <button onclick="handleAuth()" class="w-full bg-blue-600 text-white p-2 rounded mb-2">ورود</button>
+            <button onclick="closeAuth()" class="w-full bg-gray-300 p-2 rounded">بستن</button>
         </div>
     </div>
 
-    <div id="lessonModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="lessonModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
             <h3 id="lessonTitle" class="text-xl font-bold mb-4"></h3>
             <div id="lessonContent" class="prose mb-4"></div>
-            <div id="quizSection"></div>
-            <button onclick="closeLesson()" class="bg-red-600 text-white p-2 mt-4">بستن</button>
+            <div id="quizSection" class="mb-4"></div>
+            <button onclick="closeLesson()" class="bg-red-600 text-white p-2 rounded">بستن</button>
         </div>
     </div>
 
-    <!-- Footer (حذف newsletter) -->
+    <!-- Mobile Menu (بدون تغییر) -->
+    <div class="mobile-menu fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 p-6 hidden" id="mobile-menu">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">LP</span>
+                </div>
+                <span class="mr-2 text-xl font-bold text-gray-800">LingPlus Academy</span>
+            </div>
+            <button class="text-gray-700" id="close-mobile-menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <!-- محتوای منو – لینک‌ها -->
+        <nav class="space-y-4">
+            <a href="index.html" class="block py-2">خانه</a>
+            <a href="free-courses.html" class="block py-2">آموزش رایگان</a>
+            <a href="#about" class="block py-2">درباره ما</a>
+            <a href="contact.html" class="block py-2">تماس</a>
+        </nav>
+    </div>
+
+    <!-- Footer (حذف newsletter، همون قبلی) -->
     <footer class="bg-gray-900 text-white py-12 mt-16">
         <div class="container mx-auto px-4">
-            <!-- محتوای فوتر بدون newsletter -->
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <h3 class="text-lg font-bold mb-4">LingPlus Academy</h3>
                     <p class="text-gray-400">آموزش رایگان زبان انگلیسی برای همه.</p>
                 </div>
-                <!-- بقیه ستون‌ها بدون تغییر -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">لینک‌ها</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white">خانه</a></li>
+                        <li><a href="free-courses.html" class="hover:text-white">آموزش</a></li>
+                        <li><a href="#about" class="hover:text-white">درباره ما</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">موضوعات</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">گرامر</a></li>
+                        <li><a href="#" class="hover:text-white">واژگان</a></li>
+                        <li><a href="#" class="hover:text-white">مکالمه</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">تماس</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i>info@lingplus.com</li>
+                        <li><i class="fas fa-phone mr-2"></i>۰۲۱-۱۲۳۴۵۶۷۸</li>
+                    </ul>
+                </div>
             </div>
             <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
                 <p>© ۲۰۲۵ LingPlus Academy. تمامی حقوق محفوظ است.</p>
