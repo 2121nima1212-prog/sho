@@ -9,16 +9,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&family=Dana:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Hero Full-Screen فیکس‌شده */
-        #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        .hero-content { animation: fadeInScale 1s ease-out; text-align: center; z-index: 10; max-width: 800px; padding: 0 1rem; }
-        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        /* Hero Full-Screen فیکس نهایی (gradient مستقیم، بدون div داخلی) */
+        #home { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            background: linear-gradient(135deg, #0067E3 0%, #0047AB 100%); /* آبی خالص */
+            background-size: 300% 300%; /* برای انیمیشن shift */
+            animation: gradient-shift 25s ease infinite; /* ملایم */
+        }
+        .hero-content { 
+            animation: fadeInScale 1.2s ease-out; 
+            text-align: center; 
+            z-index: 10; 
+            max-width: 800px; 
+            padding: 0 1rem; 
+            color: white; 
+        }
+        @keyframes fadeInScale { 
+            from { opacity: 0; transform: scale(0.95) translateY(20px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
         
-        /* Scroll Anim (حفظ) */
+        /* Scroll Anim */
         .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
         .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
         
-        /* Modal و غیره (حفظ) */
+        /* Modal و پنل‌ها */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
         .modal-content { background-color: white; margin: 15% auto; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
         .close { color: #aaa; float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
@@ -28,15 +51,14 @@
         .report-card { background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .admin-form { background: #f9fafb; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
         
-        @media (max-width: 768px) { .hero-content { padding: 0 0.5rem; } #home { min-height: 100vh; } }
+        @media (max-width: 768px) { .hero-content { padding: 0 0.5rem; font-size: 0.9em; } #home { min-height: 100vh; } }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
+    <!-- Header (با IDها برای JS) -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
                 <div class="flex items-center">
                     <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                         <span class="text-white font-bold text-lg">ش</span>
@@ -44,7 +66,6 @@
                     <span class="mr-2 text-xl font-bold text-gray-800 hidden sm:block">شکوفی</span>
                 </div>
                 
-                <!-- Search Bar -->
                 <div class="flex-1 max-w-md mx-4 hidden md:block">
                     <div class="relative">
                         <input id="searchInput" type="text" placeholder="جستجوی مقالات انگلیسی..." class="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -52,7 +73,6 @@
                     </div>
                 </div>
                 
-                <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8 space-x-reverse">
                     <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">خانه</a>
                     <a href="free-courses.html" class="text-gray-700 hover:text-blue-600 font-medium">آموزش رایگان</a>
@@ -60,7 +80,6 @@
                     <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium">تماس با ما</a>
                 </nav>
                 
-                <!-- Login/Logout -->
                 <div class="flex items-center space-x-4 space-x-reverse">
                     <button id="loginBtn" class="text-gray-700 hover:text-blue-600 hidden sm:block" onclick="showLogin()">
                         <i class="fas fa-sign-in-alt text-xl"></i>
@@ -89,10 +108,9 @@
         </div>
     </header>
 
-    <!-- Hero Full-Screen فیکس‌شده -->
-    <section id="home" class="hero-gradient text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-800 animate-gradient-shift"></div> <!-- فیکس: آبی unify، بدون purple -->
-        <div class="container mx-auto px-4 relative z-10 hero-content">
+    <!-- Hero (فیکس: gradient مستقیم در #home) -->
+    <section id="home">
+        <div class="container mx-auto px-4 hero-content">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-on-scroll">به شکوفی خوش آمدید</h1>
             <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto animate-on-scroll">پلتفرم آموزش زبان انگلیسی با دوره‌های تعاملی و تخفیف‌های ویژه</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-on-scroll">
@@ -102,7 +120,7 @@
         </div>
     </section>
 
-    <!-- Courses Section -->
+    <!-- Courses -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 animate-on-scroll">دوره‌های محبوب</h2>
@@ -110,23 +128,23 @@
         </div>
     </section>
 
-    <!-- Dashboard Section -->
+    <!-- Dashboard -->
     <section id="dashboard" class="hidden py-16">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8 animate-on-scroll">داشبورد شما، <span id="userName"></span></h2>
-            <p class="text-center text-gray-600 mb-8 animate-on-scroll">گزارش‌های پیشرفت و نمرات</p>
+            <h2 class="text-3xl font-bold text-center mb-8">داشبورد شما، <span id="userName"></span></h2>
+            <p class="text-center text-gray-600 mb-8">گزارش‌های پیشرفت و نمرات</p>
             <div id="userReports" class="dashboard-grid"></div>
             <div class="text-center mt-8">
-                <button onclick="showSection('home')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">بازگشت به خانه</button>
+                <button onclick="showSection('home')" class="bg-gray-500 text-white px-4 py-2 rounded">بازگشت به خانه</button>
             </div>
         </div>
     </section>
 
-    <!-- Admin Section -->
+    <!-- Admin -->
     <section id="admin" class="hidden py-16">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8 animate-on-scroll">پنل ادمین</h2>
-            <div class="mb-8 animate-on-scroll">
+            <h2 class="text-3xl font-bold text-center mb-8">پنل ادمین</h2>
+            <div class="mb-8">
                 <h3 class="text-2xl font-semibold mb-4">مدیریت کاربران</h3>
                 <div id="usersList"></div>
             </div>
@@ -135,17 +153,17 @@
                 <input type="text" id="newName" placeholder="نام" class="border p-2 mr-2 mb-2 rounded">
                 <input type="email" id="newEmail" placeholder="ایمیل" class="border p-2 mr-2 mb-2 rounded">
                 <input type="password" id="newPass" placeholder="رمز عبور" class="border p-2 mr-2 mb-2 rounded">
-                <button onclick="createUser()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">ایجاد</button>
+                <button onclick="createUser()" class="bg-green-600 text-white px-4 py-2 rounded">ایجاد</button>
             </div>
             <div class="admin-form">
                 <h3 class="text-xl font-semibold mb-4">آپلود کارنامه</h3>
                 <input type="text" id="reportStudentId" placeholder="ID دانشجو (ایمیل)" class="border p-2 mr-2 mb-2 rounded w-full sm:w-auto">
                 <textarea id="reportNotes" placeholder="یادداشت" class="border p-2 mr-2 mb-2 w-full rounded"></textarea>
                 <input type="file" id="reportFile" accept=".pdf" class="border p-2 mr-2 mb-2 rounded">
-                <button onclick="uploadReport()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ذخیره</button>
+                <button onclick="uploadReport()" class="bg-blue-600 text-white px-4 py-2 rounded">ذخیره</button>
             </div>
             <div class="text-center mt-8">
-                <button onclick="showSection('home')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">بازگشت به خانه</button>
+                <button onclick="showSection('home')" class="bg-gray-500 text-white px-4 py-2 rounded">بازگشت به خانه</button>
             </div>
         </div>
     </section>
@@ -161,7 +179,7 @@
                 <label class="flex items-center mb-2">
                     <input type="checkbox" id="adminLogin"> ورود به عنوان ادمین
                 </label>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">ورود</button>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">ورود</button>
             </form>
         </div>
     </div>
@@ -204,7 +222,7 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- برای PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
