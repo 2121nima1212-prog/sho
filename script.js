@@ -1,6 +1,8 @@
 // Load data from JSON (simulate DB)
-let courses = JSON.parse(localStorage.getItem('courses')) || []; // From courses.json
-let users = JSON.parse(localStorage.getItem('users')) || [{ name: 'Admin', email: 'admin@lingplus.com', password: 'admin123', role: 'admin', approved: true }];
+let courses = JSON.parse(localStorage.getItem('courses')) || [];
+let users = JSON.parse(localStorage.getItem('users')) || [
+    { name: 'Admin', email: 'admin@lingplus.com', password: 'admin123', role: 'admin', approved: true }
+];
 let reports = JSON.parse(localStorage.getItem('reports')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 let filteredCourses = courses;
@@ -14,22 +16,44 @@ document.addEventListener('DOMContentLoaded', () => {
             courses = data;
             localStorage.setItem('courses', JSON.stringify(courses));
             renderCourses();
-        });
+        }).catch(err => console.error('Error loading courses:', err));
     } else {
         renderCourses();
     }
     if (currentUser) {
         updateUIForUser();
         renderDashboard();
-        renderAdmin();
+        if (currentUser.role === 'admin') renderAdmin();
     }
+    
+    // Scroll Animation Observer (شیک و سبک)
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px' // trigger کمی قبل scroll
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // فقط یکبار
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    
     showSection('home');
 });
 
 // UI Functions
 function showSection(section) {
     document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-    document.getElementById(section)?.classList.remove('hidden') || document.getElementById('home').classList.remove('hidden');
+    const target = document.getElementById(section);
+    if (target) {
+        target.classList.remove('hidden');
+    } else {
+        document.getElementById('home').classList.remove('hidden');
+    }
 }
 
 function showLogin() {
@@ -43,30 +67,37 @@ function closeAuth() {
 function showDashboard() {
     if (!currentUser) return showLogin();
     showSection('dashboard');
+    renderDashboard(); // Refresh
 }
 
 function showAdmin() {
     if (!currentUser || currentUser.role !== 'admin') return alert('فقط ادمین!');
     showSection('admin');
+    renderAdmin(); // Refresh
 }
 
 function updateUIForUser() {
-    document.getElementById('loginBtn').classList.add('hidden');
-    document.getElementById('logoutBtn').classList.remove('hidden');
-    document.getElementById('dashboardBtn').classList.remove('hidden');
-    if (currentUser.role === 'admin') document.getElementById('adminBtn').classList.remove('hidden');
+    document.getElementById('loginBtn')?.classList.add('hidden');
+    document.getElementById('logoutBtn')?.classList.remove('hidden');
+    document.getElementById('dashboardBtn')?.classList.remove('hidden');
+    if (currentUser.role === 'admin') {
+        document.getElementById('adminBtn')?.classList.remove('hidden');
+    }
+    // Update user name in dashboard
+    document.getElementById('userName')?.textContent = currentUser.name;
 }
 
 function logout() {
     localStorage.removeItem('currentUser');
+    currentUser = null;
     location.reload();
 }
 
 // Auth
 function handleAuth() {
-    const email = document.getElementById('authEmail').value;
+    const email = document.getElementById('authEmail').value.trim();
     const pass = document.getElementById('authPass').value;
-    const isAdminLogin = document.getElementById('adminLogin').checked;
+    const isAdminLogin = document.getElementById('adminLogin')?.checked || false;
 
     if (isAdminLogin && email === 'admin@lingplus.com' && pass === 'admin123') {
         currentUser = { name: 'Admin', email, role: 'admin', approved: true };
@@ -74,6 +105,7 @@ function handleAuth() {
         updateUIForUser();
         closeAuth();
         alert('ورود ادمین موفق');
+        showDashboard();
         return;
     }
 
@@ -84,7 +116,7 @@ function handleAuth() {
         updateUIForUser();
         closeAuth();
         alert('ورود موفق');
-        renderDashboard();
+        showDashboard();
     } else {
         alert('ایمیل یا رمز اشتباه - یا منتظر تایید ادمین');
     }
@@ -95,13 +127,14 @@ function renderCourses() {
     const grid = document.getElementById('coursesGrid');
     if (!grid) return;
     grid.innerHTML = filteredCourses.map(c => `
-        <div class="course-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-            <img src="${c.image}" alt="${c.title}" class="w-full h-48 object-cover">
+        <div class="course-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 animate-on-scroll">
+            <img src="${c.image}" alt="${c.title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x200?text=Course'">
+            <span class="discount-badge">۹۰٪ تخفیف</span>
             <div class="p-6">
                 <h3 class="font-bold text-xl mb-2 text-gray-800">${c.title}</h3>
                 <p class="text-gray-600 mb-4">${c.desc}</p>
                 <span class="text-sm text-blue-600 mb-4 block">${c.level}</span>
-                <button onclick="openLesson(${c.id})" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">شروع درس رایگان</button>
+                <button onclick="openLesson(${c.id})" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition animate-on-scroll">شروع درس رایگان</button>
             </div>
         </div>
     `).join('');
@@ -115,92 +148,59 @@ function filterCourses(level) {
 function openLesson(id) {
     const course = courses.find(c => c.id === id);
     if (!course) return alert('درس یافت نشد');
-    document.getElementById('lessonTitle').textContent = course.title;
-    document.getElementById('lessonContent').innerHTML = course.lessons[0].content; // First lesson text
-    const quizHtml = course.lessons[0].quiz.map((q, i) => `
-        <div class="mb-4 p-4 border rounded">
-            <p class="font-bold mb-2">${q.question}</p>
-            ${q.options.map(opt => `<button onclick="checkAnswer('${opt}', '${q.answer}', ${i})" class="block w-full bg-gray-200 p-2 my-1 rounded hover:bg-gray-300">${opt}</button>`).join('')}
+    // Simple modal or redirect - for now, alert sample
+    alert(`درس: ${course.title}\nتوضیح: ${course.lessons[0]?.content || 'محتوا در دسترس نیست'}`);
+    // TODO: Open full lesson modal or page
+}
+
+// Dashboard Render (جدید: کامل)
+function renderDashboard() {
+    if (!currentUser) return;
+    const reportsContainer = document.getElementById('userReports');
+    if (!reportsContainer) return;
+    
+    const userReports = reports.filter(r => r.studentId === currentUser.email);
+    if (userReports.length === 0) {
+        reportsContainer.innerHTML = '<p class="text-center text-gray-500 col-span-full">هنوز گزارشی ندارید. منتظر آپلود ادمین باشید!</p>';
+        return;
+    }
+    
+    reportsContainer.innerHTML = userReports.map(report => `
+        <div class="report-card p-4 border rounded-lg bg-white">
+            <h3 class="font-bold text-lg mb-2">کارنامه ${report.id}</h3>
+            <p class="text-gray-600 mb-2">تاریخ: ${report.date}</p>
+            <p class="mb-2"><strong>نمرات:</strong> ${JSON.stringify(report.grades)}</p>
+            <p class="text-sm text-green-600"><strong>یادداشت:</strong> ${report.notes}</p>
+            <button onclick="downloadReport(${report.id})" class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-sm">دانلود PDF</button>
         </div>
     `).join('');
-    document.getElementById('quizSection').innerHTML = `<h3 class="text-xl mb-4">کوئیز</h3>${quizHtml}<p class="font-bold">نمره کل: <span id="quizScore">0</span>/${course.lessons[0].quiz.length}</p>`;
-    document.getElementById('lessonModal').classList.remove('hidden');
-    quizScore = 0;
+    
+    // Update user name
+    document.getElementById('userName').textContent = currentUser.name;
 }
 
-function closeLesson() {
-    document.getElementById('lessonModal').classList.add('hidden');
-}
-
-function checkAnswer(selected, correct, index) {
-    if (selected === correct) {
-        quizScore++;
-        document.getElementById(`quizScore`).textContent = quizScore;
-        alert('درست! +1 نمره');
-    } else {
-        alert('غلط! پاسخ درست: ' + correct);
-    }
-    // Save grade
-    const grades = JSON.parse(localStorage.getItem('grades') || '{}');
-    grades[`lesson_${index}`] = (quizScore / correct.length) * 100; // %
-    localStorage.setItem('grades', JSON.stringify(grades));
-}
-
-function enrollLesson() {
-    // Save enrollment
-    const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
-    enrollments.push({ userId: currentUser.email, courseId: courses[0].id, progress: 50, grades: localStorage.getItem('grades') });
-    localStorage.setItem('enrollments', JSON.stringify(enrollments));
-    alert('درس ثبت شد - پیشرفت در داشبورد ببینید');
-    closeLesson();
-    renderDashboard();
-}
-
-// Dashboard
-function renderDashboard() {
-    const progressList = document.getElementById('progressList');
-    if (!progressList) return;
-    const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]').filter(e => e.userId === currentUser.email);
-    progressList.innerHTML = enrollments.map(e => `
-        <div class="p-4 border rounded mb-4 bg-gray-50">
-            <h4 class="font-bold">${courses.find(c => c.id === e.courseId)?.title || 'درس'}</h4>
-            <p>پیشرفت: ${e.progress}%</p>
-            <p>نمرات: ${JSON.stringify(e.grades)}</p>
-        </div>
-    `).join('') || '<p>هیچ درسی ثبت نشده</p>';
-
-    const reportsList = document.getElementById('reportsList');
-    const userReports = reports.filter(r => r.studentId === currentUser.email);
-    reportsList.innerHTML = userReports.map(r => `
-        <div class="p-4 border rounded mb-4 bg-gray-50">
-            <p><strong>تاریخ:</strong> ${r.date}</p>
-            <p><strong>نمرات:</strong> ${JSON.stringify(r.grades)}</p>
-            <p><strong>یادداشت:</strong> ${r.notes}</p>
-            <button onclick="downloadReport('${r.id}')" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">دانلود PDF کارنامه</button>
-        </div>
-    `).join('') || '<p>کارنامه‌ای وجود ندارد</p>';
-}
-
+// Download Report PDF (حفظ، با jsPDF - CDN در HTML اضافه کن)
 function downloadReport(id) {
     const report = reports.find(r => r.id === id);
-    if (!report) return alert('کارنامه یافت نشد');
+    if (!report) return alert('گزارش یافت نشد');
+    
+    // Assume jsPDF loaded
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('کارنامه لینگ پلاس', 105, 20, { align: 'center' });
-    doc.text(`دانشجو: ${currentUser.name}`, 20, 40);
-    doc.text(`تاریخ: ${report.date}`, 20, 50);
-    doc.text(`نمرات: ${JSON.stringify(report.grades)}`, 20, 60);
-    doc.text(`یادداشت ادمین: ${report.notes}`, 20, 80);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`کارنامه دانشجو: ${report.studentId}`, 20, 30);
+    doc.text(`تاریخ: ${report.date}`, 20, 40);
+    doc.text(`نمرات: ${JSON.stringify(report.grades)}`, 20, 50);
+    doc.text(`یادداشت ادمین: ${report.notes}`, 20, 60);
     doc.save(`karname-${id}.pdf`);
 }
 
-// Admin
+// Admin Render (جدید: کامل)
 function renderAdmin() {
     const usersList = document.getElementById('usersList');
     if (!usersList) return;
     usersList.innerHTML = users.filter(u => u.role !== 'admin').map(u => `
-        <div class="p-4 border rounded mb-4 flex justify-between items-center bg-gray-50">
+        <div class="p-4 border rounded mb-4 flex justify-between items-center bg-gray-50 animate-on-scroll">
             <span class="font-bold">${u.name} (${u.email}) - ${u.approved ? 'تاییدشده' : 'در انتظار'}</span>
             <div class="space-x-2 space-x-reverse">
                 <button onclick="approveUser('${u.email}')" class="bg-green-600 text-white px-2 py-1 rounded text-sm ${u.approved ? 'hidden' : ''}">تایید</button>
@@ -244,13 +244,20 @@ function uploadReport() {
     if (!file && !notes) return alert('فایل PDF یا یادداشت اضافه کن');
     // Simulate upload - save to JSON
     const id = Date.now();
-    reports.push({ id, studentId, notes, grades: { grammar: 'A', vocab: 'B+' }, date: new Date().toLocaleString('fa-IR') });
+    reports.push({ 
+        id, 
+        studentId, 
+        notes, 
+        grades: { grammar: 'A', vocab: 'B+' }, // Default, or parse from file
+        date: new Date().toLocaleDateString('fa-IR') 
+    });
     localStorage.setItem('reports', JSON.stringify(reports));
     alert('کارنامه ذخیره شد - دانشجو در داشبورد می‌بینه');
     document.getElementById('reportStudentId').value = '';
     document.getElementById('reportNotes').value = '';
     document.getElementById('reportFile').value = '';
-    renderDashboard(); // Refresh for student view
+    // Refresh dashboard for potential student view
+    if (currentUser) renderDashboard();
 }
 
 function muteUser(email) {
@@ -274,19 +281,37 @@ function suspendUser(email) {
 }
 
 // Mobile Menu
-document.getElementById('mobile-menu-button').onclick = () => document.getElementById('mobile-menu').classList.add('open');
-document.getElementById('close-mobile-menu').onclick = () => document.getElementById('mobile-menu').classList.remove('open');
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('open');
+    });
+    document.getElementById('close-mobile-menu')?.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.remove('open');
+    });
+});
 
 function closeMobile() {
     document.getElementById('mobile-menu').classList.remove('open');
 }
 
 // Search
-document.getElementById('searchInput').onkeyup = (e) => {
-    const query = e.target.value.toLowerCase();
-    filteredCourses = courses.filter(c => c.title.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query));
-    renderCourses();
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.onkeyup = (e) => {
+            const query = e.target.value.toLowerCase();
+            filteredCourses = courses.filter(c => 
+                c.title.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query)
+            );
+            renderCourses();
+        };
+    }
+});
 
 // Other sections (about, contact) - static
-document.getElementById('about') ? document.getElementById('about').innerHTML = '<div class="container mx-auto px-4 py-16"><h2 class="text-3xl font-bold mb-4">درباره ما</h2><p class="text-gray-600">پلتفرم آموزش رایگان زبان انگلیسی با تمرکز روی متون و کوئیز.</p></div>' : null;
+document.addEventListener('DOMContentLoaded', () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+        aboutSection.innerHTML = '<div class="container mx-auto px-4 py-16"><h2 class="text-3xl font-bold mb-4">درباره ما</h2><p class="text-gray-600">پلتفرم آموزش رایگان زبان انگلیسی با تمرکز روی متون و کوئیز.</p></div>';
+    }
+});
